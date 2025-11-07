@@ -107,7 +107,7 @@ The project uses:
 
 ## License
 
-© 2024 Miso Solutions LLC. Developed by Yul Castro.
+© 2025 Miso Solutions LLC. Developed by Yul Castro.
 
 ## Contact
 
