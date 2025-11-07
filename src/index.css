@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+    --color-blue: #01204e;
+    --color-green: #028391;
+    --color-beige: #f6dcac;
+    --color-orange: #feae6f;
+}
+
+@layer base {
+    html, body, #root { min-height: 100dvh; }
+    body { @apply bg-blue text-beige antialiased; }
+    .sidebar-icon {
+        @apply relative flex items-center justify-center h-10 w-10 mx-auto border-1 
+        shadow-lg rounded-3xl text-blue bg-beige border-beige
+        hover:rounded-xl transition-all duration-300 ease-linear cursor-pointer;
+        z-index: 10; }
+    .sidebar-tooltip {
+        @apply absolute w-auto p-2 m-2 min-w-max left-10 rounded-md shadow-md text-blue bg-beige
+        text-xs font-bold transition-all duration-100 scale-0 origin-left;
+        z-index: 9999; }
+}
