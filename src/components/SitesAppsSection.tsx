@@ -124,21 +124,23 @@ const SitesAppsSection: React.FC = () => {
       description: "Built and deployed a scalable, SEO-optimized site on AWS (Amplify, S3, CloudFront). Increased membership 30% through improved UX, event visibility, and community engagement.",
       technologies: ["HTML5", "CSS3", "JavaScript", "React", "AWS", "SEO", "GitHub"],
       liveUrl: "http://vaou.org/",
-      githubUrl: "https://github.com/misowebs/va_website"
+      githubUrl: "https://github.com/misowebs/va_website",
+      logo: "/SitesLogos/VA Logo.png"
     },
     {
       title: "Agencia de Festejos Aeropuerto",
       description: "Developed a modern, mobile-first WordPress site on AWS Lightsail. Boosted client inquiries 12% with fast performance, custom booking forms, and optimized SEO design.",
       technologies: ["HTML5", "CSS3", "JavaScript", "AWS Lightsail", "Wordpress", "SEO"],
       liveUrl: "https://aeropuertoca.com/",
-      githubUrl: ""
+      githubUrl: "",
+      logo: "/SitesLogos/AFACA Logo.png"
     }
   ];
 
   const selectedProject = selectedProjectIndex !== null ? projects[selectedProjectIndex] : null;
 
   return (
-    <section id="webs" className="min-h-screen flex items-center justify-center px-4 py-16">
+    <section id="webs" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16">
@@ -158,9 +160,18 @@ const SitesAppsSection: React.FC = () => {
               onClick={() => handleOpenModal(index)}
               className="bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-200 p-6 text-left"
             >
-              <h3 className="text-xl font-bold text-beige">
-                {project.title}
-              </h3>
+              <div className="flex items-center gap-4">
+                {project.logo && (
+                  <img 
+                    src={project.logo} 
+                    alt={`${project.title} logo`}
+                    className="h-12 w-12 object-contain flex-shrink-0 rounded-lg"
+                  />
+                )}
+                <h3 className="text-xl font-bold text-beige">
+                  {project.title}
+                </h3>
+              </div>
             </button>
           ))}
         </div>

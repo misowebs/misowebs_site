@@ -46,12 +46,12 @@ const AboutSection: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-4 py-16">
+    <section id="about" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16">
           <h2 className="text-5xl font-bold text-beige mb-4">
-            About Misowebs
+            About
           </h2>
           <p className="text-xl text-orange">
             Your trusted partner in digital transformation
@@ -92,7 +92,7 @@ const AboutSection: React.FC = () => {
                 <h4 className="text-xl font-bold text-beige mb-3">
                   Founder & Lead Developer
                 </h4>
-                <p className="text-beige/80 leading-relaxed mb-4">
+                <p className="text-xs md:text-base text-beige/80 leading-relaxed mb-4">
                 Full-stack developer with hands-on experience designing, deploying, and maintaining web platforms on AWS. 
                 Computer Science graduate from the University of Oklahoma.
 
@@ -176,7 +176,7 @@ const AboutSection: React.FC = () => {
                     <h4 className="text-xl font-bold text-beige mb-3">
                       {value.title}
                     </h4>
-                    <p className="text-beige/80 leading-relaxed">
+                    <p className="text-xs md:text-base text-beige/80 leading-relaxed">
                       {value.description}
                     </p>
                   </div>

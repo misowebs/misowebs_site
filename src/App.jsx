@@ -34,7 +34,7 @@ function App() {
           <AboutSection />
 
           {/* Footer */}
-          <div>
+          <div className="text-xs md:text-base">
             <p>{SITE_CONFIG.title} by Miso Solutions LLC © {new Date().getFullYear()} Developed by Yul Castro</p><br/>
           </div>
         </div>

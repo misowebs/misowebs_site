@@ -97,7 +97,7 @@ const ServicesSection: React.FC = () => {
   const selectedService = selectedServiceIndex !== null ? services[selectedServiceIndex] : null;
 
   return (
-    <section id="services" className="min-h-screen flex items-center justify-center px-4 py-16">
+    <section id="services" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16">
