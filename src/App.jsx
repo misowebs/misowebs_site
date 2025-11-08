@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -8,10 +8,28 @@ import ServicesSection from './components/ServicesSection'
 import SitesAppsSection from './components/SitesAppsSection'
 import ContactSection from './components/ContactSection'
 import AboutSection from './components/AboutSection'
+import PortfolioPage from './components/PortfolioPage'
 import { SITE_CONFIG } from './constants/siteConfig'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [showPortfolio, setShowPortfolio] = useState(false)
+
+  useEffect(() => {
+    // Check if URL has /portfolio or ?page=portfolio or hash #portfolio
+    const path = window.location.pathname
+    const params = new URLSearchParams(window.location.search)
+    const hash = window.location.hash
+    
+    if (path.includes('/portfolio') || params.get('page') === 'portfolio' || hash === '#portfolio') {
+      setShowPortfolio(true)
+    }
+  }, [])
+
+  // Show portfolio page if requested
+  if (showPortfolio) {
+    return <PortfolioPage />
+  }
 
   return (
     <>

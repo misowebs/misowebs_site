@@ -1,0 +1,430 @@
+import React, { useState } from 'react';
+import { 
+  FaGithub, 
+  FaLinkedin, 
+  FaEnvelope,
+  FaUser,
+  FaFileAlt,
+  FaTimes,
+  FaExternalLinkAlt
+} from 'react-icons/fa';
+
+const WebsitePreview: React.FC<{ url: string; title: string }> = ({ url, title }) => {
+  const [loadError, setLoadError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loadError) {
+    return (
+      <div className="flex items-center justify-center h-full text-beige/60">
+        <div className="text-center">
+          <div className="text-4xl mb-2">🌐</div>
+          <p className="mb-2">Preview unavailable</p>
+          <a 
+            href={url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-orange hover:underline inline-flex items-center gap-1"
+          >
+            Visit Site <FaExternalLinkAlt size="12" />
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-beige/10 z-10">
+          <div className="text-beige/60">Loading preview...</div>
+        </div>
+      )}
+      <div 
+        className="w-full h-full overflow-hidden" 
+        style={{ 
+          transform: 'scale(0.4)', 
+          transformOrigin: 'top left', 
+          width: '250%', 
+          height: '250%' 
+        }}
+      >
+        <iframe
+          src={url}
+          className="w-full h-full border-0"
+          title={`${title} Preview`}
+          loading="lazy"
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+          onLoad={() => setIsLoading(false)}
+          onError={() => {
+            setLoadError(true);
+            setIsLoading(false);
+          }}
+        />
+      </div>
+    </>
+  );
+};
+
+const PortfolioPage: React.FC = () => {
+  const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
+  const [isModalClosing, setIsModalClosing] = useState(false);
+
+  const profileData = {
+    name: "Yul Castro Barazarte",
+    title: "Computer Scientist",
+    bio: "Software developer skilled in AWS and web design, with hands-on experience deploying and maintaining scalable platforms.",
+    image: "/Headshot.jpeg",
+    resumeUrl: "/Documents/Yul Castro Barazarte.pdf",
+    vcfUrl: "/Documents/Yul Castro Barazarte.vcf",
+    email: "yul.castro@misowebs.com",
+    links: [
+      {
+        label: "LinkedIn",
+        url: "https://www.linkedin.com/in/yulcastro",
+        icon: <FaLinkedin size="20" />,
+        color: "bg-beige/10 hover:bg-beige/20"
+      },
+      {
+        label: "Contact",
+        url: "contact",
+        icon: <FaUser size="20" />,
+        color: "bg-beige/10 hover:bg-beige/20"
+      },
+      {
+        label: "GitHub",
+        url: "https://github.com/castroyul",
+        icon: <FaGithub size="20" />,
+        color: "bg-beige/10 hover:bg-beige/20"
+      },
+      {
+        label: "Resume",
+        url: "resume",
+        icon: <FaFileAlt size="20" />,
+        color: "bg-orange/20 hover:bg-orange/30 text-orange"
+      }
+    ],
+    skills: ["AWS", "JavaScript", "HTML/CSS", "Python"]
+  };
+
+  const projects = [
+    {
+        title: "Misowebs",
+        description: "A modern, responsive portfolio and business website showcasing web development services. Features include interactive project showcases and mobile-optimized navigation. Built with React and Tailwind CSS, deployed on AWS for optimal performance and scalability.",
+        technologies: ["HTML", "Tailwind CSS", "JavaScript", "React", "AWS", "SEO", "GitHub", "Cursor"],
+        liveUrl: "/",
+        githubUrl: "https://github.com/misowebs/misowebs_site",
+        logo: "/Misowebs_Logo_Circle.png"
+    },
+    {
+      title: "Venezuelan Association Website",
+      description: "Built and deployed a scalable, SEO-optimized site on AWS (Amplify, S3, CloudFront). Increased membership 30% through improved UX, event visibility, and community engagement.",
+      technologies: ["HTML/CSS", "JavaScript", "React", "AWS Amplify", "CloudFront", "Route 53", "S3", "SEO", "GitHub", "Cursor"],
+      liveUrl: "http://vaou.org/",
+      githubUrl: "https://github.com/misowebs/va_website",
+      logo: "/SitesLogos/VA Logo.png"
+    },
+    {
+      title: "Agencia de Festejos Aeropuerto",
+      description: "Developed a modern, mobile-first WordPress site on AWS Lightsail. Boosted client inquiries 12% with fast performance, custom booking forms, and optimized SEO design.",
+      technologies: ["HTML/CSS", "JavaScript", "AWS Lightsail", "Wordpress", "SEO"],
+      liveUrl: "https://aeropuertoca.com/",
+      githubUrl: "",
+      logo: "/SitesLogos/AFACA Logo.png"
+    }
+  ];
+
+  const handleOpenModal = (index: number) => {
+    setIsModalClosing(false);
+    setSelectedProjectIndex(index);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleCloseModal = () => {
+    setIsModalClosing(true);
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      setSelectedProjectIndex(null);
+      setIsModalClosing(false);
+    }, 300);
+  };
+
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedProjectIndex !== null) {
+        setIsModalClosing(true);
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          setSelectedProjectIndex(null);
+          setIsModalClosing(false);
+        }, 300);
+      }
+    };
+
+    if (selectedProjectIndex !== null) {
+      window.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [selectedProjectIndex]);
+
+  const handleLinkClick = (url: string, label: string) => {
+    // Handle resume - open in new tab
+    if (url === 'resume' || label === 'Resume') {
+      window.open(profileData.resumeUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    
+    // Handle contact vcf file - download
+    if (url === 'contact' || label === 'Contact') {
+      const link = document.createElement('a');
+      link.href = profileData.vcfUrl;
+      link.download = 'Yul_Castro_Barazarte.vcf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return;
+    }
+    
+    if (url.startsWith('#')) {
+      // Navigate to main site root and scroll to section
+      window.location.href = `/${url}`;
+    } else {
+      // Open external link
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-blue flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full">
+        {/* Profile Section */}
+        <div className="text-center mb-8">
+          {/* Profile Image */}
+          <div className="mb-6 flex justify-center profile-image-float">
+            <img 
+              src={profileData.image} 
+              alt={profileData.name}
+              className="w-62 h-62 rounded-full border-4 border-orange object-cover shadow-lg profile-image-glow"
+            />
+          </div>
+          
+          {/* Name */}
+          <h1 className="text-4xl font-bold text-beige mb-2">
+            {profileData.name}
+          </h1>
+          
+          {/* Title */}
+          <p className="text-lg text-orange mb-4 font-medium">
+            {profileData.title}
+          </p>
+          
+          {/* Bio */}
+          <p className="text-sm text-beige/80 leading-relaxed mb-6 px-4">
+            {profileData.bio}
+          </p>
+          
+          {/* Skills Tags */}
+          <div className="flex flex-wrap justify-center gap-2 mb-6 px-4">
+            {profileData.skills.map((skill, index) => (
+              <span 
+                key={index}
+                className="px-3 py-1 bg-orange/20 text-orange rounded-full text-xs font-medium"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Links Section */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {profileData.links.map((link, index) => (
+            <button
+              key={index}
+              onClick={() => handleLinkClick(link.url, link.label)}
+              className={`
+                w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl
+                border border-beige/20 backdrop-blur-sm
+                transition-all duration-200 active:scale-95
+                ${link.color}
+                text-beige font-medium text-xl
+              `}
+            >
+              {link.icon}
+              <span>{link.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Location Map Section */}
+        <div className="mb-6">
+          <div className="relative rounded-xl overflow-hidden border border-beige/20 bg-blue/30 h-[250px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104267.89675557887!2d-97.44473577150065!3d35.24700570293117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87b263b67f93eee7%3A0x445b233faba85cf8!2sNorman%2C%20OK!5e0!3m2!1sen!2sus!4v1762573370254!5m2!1sen!2sus"
+              width="100%"
+              height="250"
+              style={{ border: 0 }}
+              allowFullScreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full"
+              title="Norman, Oklahoma Location"
+            />
+          </div>
+        </div>
+
+        {/* Projects Section */}
+        <div className="mb-6 border-t border-beige/20 pt-6">
+          <h2 className="text-2xl font-bold text-beige mb-4 text-center">Projects</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {projects.map((project, index) => (
+              <button
+                key={index}
+                onClick={() => handleOpenModal(index)}
+                className="project-card-animated bg-blue/50 backdrop-blur-sm rounded-xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-200 p-4 flex flex-col items-center gap-2"
+                style={{
+                  '--border-delay': `${index * 0.8}s`
+                } as React.CSSProperties & { '--border-delay': string }}
+              >
+                {project.logo && (
+                  <img 
+                    src={project.logo} 
+                    alt={`${project.title} logo`}
+                    className="h-24 w-24 object-contain rounded-lg"
+                  />
+                )}
+                <h3 className="text-sm font-bold text-beige text-center leading-tight">
+                  {project.title}
+                </h3>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Contact Info */}
+        <div className="flex flex-col items-center gap-3 pt-6 border-t border-beige/20">
+          {profileData.email && (
+            <a
+              href={`mailto:${profileData.email}`}
+              className="flex items-center gap-2 text-beige/80 hover:text-orange transition-colors duration-200 text-lg"
+            >
+              <FaEnvelope size="16" />
+              <span>{profileData.email}</span>
+            </a>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8 pt-6 border-t border-beige/10">
+          <p className="text-xs text-beige/60">
+            Misowebs © {new Date().getFullYear()}
+          </p>
+        </div>
+      </div>
+
+      {/* Project Modal */}
+      {selectedProjectIndex !== null && projects[selectedProjectIndex] && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
+            isModalClosing ? 'animate-fadeOut' : 'animate-fadeIn'
+          }`}
+          onClick={handleCloseModal}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-blue/95 backdrop-blur-sm" />
+          
+          {/* Modal Content */}
+          <div
+            className={`relative bg-blue/98 backdrop-blur-md rounded-2xl border border-orange/50 shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col ${
+              isModalClosing ? 'animate-scaleOut' : 'animate-scaleIn'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-beige/20 flex-shrink-0">
+              <h3 className="text-2xl font-bold text-beige pr-4">
+                {projects[selectedProjectIndex].title}
+              </h3>
+              <button
+                onClick={handleCloseModal}
+                className="text-beige hover:text-orange active:scale-95 transition-all duration-200 p-2 rounded-full hover:bg-beige/10 flex-shrink-0"
+                aria-label="Close modal"
+              >
+                <FaTimes size="24" />
+              </button>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto flex-1">
+              {/* Website Preview */}
+              <div className="bg-beige/10 rounded-xl h-64 mx-6 mt-6 mb-6 overflow-hidden border border-beige/20 relative">
+                <WebsitePreview url={projects[selectedProjectIndex].liveUrl} title={projects[selectedProjectIndex].title} />
+                {/* Orange tint overlay */}
+                <div className="absolute inset-0 bg-blue/30 pointer-events-none mix-blend-multiply" />
+              </div>
+              
+              {/* Project Info */}
+              <div className="px-6 mb-6">
+                <p className="text-beige/90 leading-relaxed text-base">
+                  {projects[selectedProjectIndex].description}
+                </p>
+              </div>
+              
+              {/* Technologies */}
+              <div className="px-6 mb-6">
+                <div className="flex flex-wrap gap-2">
+                  {projects[selectedProjectIndex].technologies.map((tech, techIndex) => (
+                    <span 
+                      key={techIndex}
+                      className="px-3 py-1 bg-orange/20 text-orange rounded-full text-sm font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Project Links */}
+              <div className="px-6 pb-6 flex flex-col gap-3">
+                <a 
+                  href={projects[selectedProjectIndex].liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-orange text-blue rounded-lg hover:bg-orange/80 active:scale-95 transition-all duration-200 font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <FaExternalLinkAlt size="16" />
+                  Visit Site
+                </a>
+                {projects[selectedProjectIndex].githubUrl && (
+                  <a 
+                    href={projects[selectedProjectIndex].githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 px-4 py-3 border border-beige/30 text-beige rounded-lg hover:bg-beige/10 active:scale-95 transition-all duration-200 font-medium"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <FaGithub size="16" />
+                    View Code
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PortfolioPage;
+

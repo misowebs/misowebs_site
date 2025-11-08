@@ -69,3 +69,81 @@
         animation: scaleOut 0.3s ease-in forwards;
     }
 }
+
+/* Profile image animations - outside layer to avoid Tailwind conflicts */
+@keyframes profileFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes profileGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(254, 174, 111, 0.4), 0 0 40px rgba(254, 174, 111, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(254, 174, 111, 0.6), 0 0 50px rgba(254, 174, 111, 0.3);
+    }
+}
+
+.profile-image-float {
+    animation: profileFloat 4s ease-in-out infinite;
+    will-change: transform;
+}
+
+.profile-image-glow {
+    animation: profileGlow 4s ease-in-out infinite;
+}
+
+/* Animated border effect for project cards */
+@keyframes borderFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 200% 200%;
+    }
+}
+
+.project-card-animated {
+    position: relative;
+    background-clip: padding-box;
+}
+
+.project-card-animated::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(
+        45deg,
+        rgba(254, 174, 111, 0.3) 0%,
+        rgba(254, 174, 111, 0.6) 25%,
+        rgba(2, 131, 145, 0.5) 50%,
+        rgba(254, 174, 111, 0.6) 75%,
+        rgba(254, 174, 111, 0.3) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: borderFlow 3s ease-in-out infinite;
+    animation-delay: var(--border-delay, 0s);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.8;
+}
+
+.project-card-animated > * {
+    position: relative;
+    z-index: 1;
+}

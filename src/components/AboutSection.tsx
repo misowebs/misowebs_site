@@ -66,9 +66,7 @@ const AboutSection: React.FC = () => {
             </h3>
             <div className="space-y-6">
               <a 
-                href="https://www.linkedin.com/in/yulcastro" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                href="/portfolio" 
                 className={`
                   block bg-blue/50 backdrop-blur-sm rounded-2xl p-6 border border-beige/20
                   cursor-pointer select-none no-underline
