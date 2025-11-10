@@ -136,6 +136,14 @@ const SitesAppsSection: React.FC = () => {
       liveUrl: "https://aeropuertoca.com/",
       githubUrl: "",
       logo: "/SitesLogos/AFACA Logo.png"
+    },
+    {
+      title: "Misowebs Website",
+      description: "A modern, responsive portfolio and business website showcasing web development services. Features include interactive project showcases and mobile-optimized navigation. Built with React and Tailwind CSS, deployed on AWS for optimal performance and scalability.",
+      technologies: ["HTML", "Tailwind CSS", "JavaScript", "React", "AWS", "SEO", "GitHub", "Cursor"],
+      liveUrl: "/",
+      githubUrl: "https://github.com/misowebs/misowebs_site",
+      logo: "/Misowebs_Logo_Circle.png"
     }
   ];
 
