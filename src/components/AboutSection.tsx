@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FaRocket, FaUsers, FaAward, FaLightbulb } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const AboutSection: React.FC = () => {
+  const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.15 });
   const [isClicked, setIsClicked] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [valueClicked, setValueClicked] = useState<{ [key: number]: boolean }>({});
@@ -46,21 +48,41 @@ const AboutSection: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-4 py-12">
+    <section ref={sectionRef} id="about" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-beige mb-4">
+          <h2 
+            className={`text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+          >
             About
           </h2>
-          <p className="text-xl text-orange">
+          <p 
+            className={`text-xl text-orange transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '200ms' }}
+          >
             Your trusted partner in digital transformation
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 mb-16">        
           {/* Personal/Team Info */}
-          <div>
+          <div 
+            className={`transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-x-0' 
+                : 'opacity-0 -translate-x-6'
+            }`}
+            style={{ transitionDelay: '400ms' }}
+          >
             <h3 className="text-3xl font-bold text-beige mb-6">
               Meet the Team
             </h3>
@@ -120,7 +142,14 @@ const AboutSection: React.FC = () => {
           </div>
 
           {/* Company Story */}
-          <div>
+          <div 
+            className={`transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-x-0' 
+                : 'opacity-0 translate-x-6'
+            }`}
+            style={{ transitionDelay: '500ms' }}
+          >
             <h3 className="text-3xl font-bold text-beige mb-6">
               Our Story
             </h3>
@@ -155,7 +184,12 @@ const AboutSection: React.FC = () => {
                       cursor-pointer select-none
                       transform transition-all ease-in-out
                       ${valueClicked[index] ? 'duration-200 scale-100' : valueHovering[index] ? 'duration-300 scale-102 shadow-lg shadow-orange/20' : 'duration-300 scale-100'}
+                      ${isVisible 
+                        ? 'opacity-100 scale-100 translate-y-0' 
+                        : 'opacity-0 scale-90 translate-y-4'
+                      }
                     `}
+                    style={{ transitionDelay: `${700 + index * 100}ms` }}
                     onClick={() => handleValueClick(index)}
                     onMouseEnter={() => setValueHovering(prev => ({ ...prev, [index]: true }))}
                     onMouseLeave={() => setValueHovering(prev => ({ ...prev, [index]: false }))}

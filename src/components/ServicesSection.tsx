@@ -1,7 +1,9 @@
 import React from 'react';
 import { FaCode, FaGlobe, FaServer, FaTimes } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const ServicesSection: React.FC = () => {
+  const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.15 });
   type Service = {
     icon: React.ReactNode;
     title: string;
@@ -97,14 +99,27 @@ const ServicesSection: React.FC = () => {
   const selectedService = selectedServiceIndex !== null ? services[selectedServiceIndex] : null;
 
   return (
-    <section id="services" className="min-h-screen flex items-center justify-center px-4 py-12">
+    <section ref={sectionRef} id="services" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-beige mb-4">
+          <h2 
+            className={`text-3xl md:text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+          >
             Our Services
           </h2>
-          <p className="text-lg md:text-xl text-orange">
+          <p 
+            className={`text-lg md:text-xl text-orange transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '200ms' }}
+          >
             Comprehensive web solutions tailored to your needs
           </p>
         </div>
@@ -115,7 +130,12 @@ const ServicesSection: React.FC = () => {
             <button
               key={index}
               onClick={() => handleOpenModal(index)}
-              className="bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-200 p-6 text-left"
+              className={`bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-600 ease-in-out p-6 text-left ${
+                isVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-6'
+              }`}
+              style={{ transitionDelay: `${400 + index * 150}ms` }}
             >
               <div className="flex items-center gap-4">
                 <div className="text-orange flex-shrink-0">

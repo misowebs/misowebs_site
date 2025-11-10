@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const ContactSection: React.FC = () => {
+  const [sectionRef, isVisible] = useScrollAnimation({ threshold: 0.15 });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,21 +30,41 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center px-4 py-12">
+    <section ref={sectionRef} id="contact" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto w-full">
         {/* Title */}
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-beige mb-4">
+          <h2 
+            className={`text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+          >
             Get In Touch
           </h2>
-          <p className="text-xl text-orange">
+          <p 
+            className={`text-xl text-orange transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '200ms' }}
+          >
             Ready to start your next project? Let's talk!
           </p>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
-          <div className="space-y-8">
+          <div 
+            className={`space-y-8 transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-x-0' 
+                : 'opacity-0 -translate-x-6'
+            }`}
+            style={{ transitionDelay: '400ms' }}
+          >
             <div>
               <h3 className="text-2xl font-bold text-beige mb-6">
                 Contact Information
@@ -76,7 +98,14 @@ const ContactSection: React.FC = () => {
           </div>
           
           {/* Contact Form */}
-          <div className="bg-blue/50 backdrop-blur-sm rounded-2xl p-8 border border-beige/20">
+          <div 
+            className={`bg-blue/50 backdrop-blur-sm rounded-2xl p-8 border border-beige/20 transition-all duration-700 ease-in-out ${
+              isVisible 
+                ? 'opacity-100 translate-x-0' 
+                : 'opacity-0 translate-x-6'
+            }`}
+            style={{ transitionDelay: '500ms' }}
+          >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name and Organization Name side by side */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

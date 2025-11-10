@@ -11,9 +11,19 @@ import AboutSection from './components/AboutSection'
 import PortfolioPage from './components/PortfolioPage'
 import { SITE_CONFIG } from './constants/siteConfig'
 
+// Footer component
+function FooterSection() {
+  return (
+    <div className="text-xs md:text-base">
+      <p>{SITE_CONFIG.title} by Miso Solutions LLC © {new Date().getFullYear()} Developed by Yul Castro</p><br/>
+    </div>
+  );
+}
+
 function App() {
   const [count, setCount] = useState(0)
   const [showPortfolio, setShowPortfolio] = useState(false)
+  const [navbarEntered, setNavbarEntered] = useState(false)
 
   const checkRoute = () => {
     const path = window.location.pathname
@@ -34,8 +44,14 @@ function App() {
     // Listen for browser navigation (back/forward buttons)
     window.addEventListener('popstate', checkRoute)
     
+    // Trigger navbar animation immediately
+    const timer = setTimeout(() => {
+      setNavbarEntered(true)
+    }, 100)
+    
     return () => {
       window.removeEventListener('popstate', checkRoute)
+      clearTimeout(timer)
     }
   }, [])
 
@@ -47,7 +63,7 @@ function App() {
   return (
     <>
       <div>
-        <Navbar/>
+        <Navbar hasEntered={navbarEntered} />
         <div className="pb-16 md:pb-0 md:ml-12">
           {/* Section 1: Home */}
           <HomeSection />
@@ -65,9 +81,7 @@ function App() {
           <AboutSection />
 
           {/* Footer */}
-          <div className="text-xs md:text-base">
-            <p>{SITE_CONFIG.title} by Miso Solutions LLC © {new Date().getFullYear()} Developed by Yul Castro</p><br/>
-          </div>
+          <FooterSection />
         </div>
       </div>
     </>

@@ -1,7 +1,11 @@
 import React from 'react';
 import { FaHome, FaGlobe, FaCode, FaPhone, FaInfo } from 'react-icons/fa';
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  hasEntered?: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ hasEntered = false }) => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -12,7 +16,13 @@ const Navbar: React.FC = () => {
   return (
     <>
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 w-full h-16 bg-blue/95 backdrop-blur-sm border-t border-orange/50 shadow-lg z-50 md:hidden">
+      <nav 
+        className={`fixed bottom-0 left-0 right-0 w-full h-16 bg-blue/95 backdrop-blur-sm border-t border-orange/50 shadow-lg z-50 md:hidden transition-all duration-1800 ease-in-out ${
+          hasEntered 
+            ? 'opacity-100 translate-y-0' 
+            : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="flex flex-row justify-around items-center h-full px-2">
           {/* Home */}
           <MobileNavItem 
@@ -52,7 +62,13 @@ const Navbar: React.FC = () => {
       </nav>
 
       {/* Desktop Left Sidebar */}
-      <div className="hidden md:flex fixed top-0 left-0 h-screen w-12 flex-col shadow-lg border-r-1 border-orange/50 z-50">
+      <div 
+        className={`hidden md:flex fixed top-0 left-0 h-screen w-12 flex-col shadow-lg border-r-1 border-orange/50 z-50 transition-all duration-1500 ease-in-out ${
+          hasEntered 
+            ? 'opacity-100 translate-x-0' 
+            : 'opacity-0 -translate-x-8'
+        }`}
+      >
         {/* Navigation icons */}
         <div className="flex flex-col justify-center space-y-6 flex-1">
           {/* Home Icon */}
