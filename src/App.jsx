@@ -15,14 +15,27 @@ function App() {
   const [count, setCount] = useState(0)
   const [showPortfolio, setShowPortfolio] = useState(false)
 
-  useEffect(() => {
-    // Check if URL has /portfolio or ?page=portfolio or hash #portfolio
+  const checkRoute = () => {
     const path = window.location.pathname
     const params = new URLSearchParams(window.location.search)
     const hash = window.location.hash
     
-    if (path.includes('/portfolio') || params.get('page') === 'portfolio' || hash === '#portfolio') {
+    if (path.includes('/YulCastro') || path.includes('/portfolio') || params.get('page') === 'portfolio' || hash === '#portfolio') {
       setShowPortfolio(true)
+    } else {
+      setShowPortfolio(false)
+    }
+  }
+
+  useEffect(() => {
+    // Check route on mount
+    checkRoute()
+    
+    // Listen for browser navigation (back/forward buttons)
+    window.addEventListener('popstate', checkRoute)
+    
+    return () => {
+      window.removeEventListener('popstate', checkRoute)
     }
   }, [])
 
