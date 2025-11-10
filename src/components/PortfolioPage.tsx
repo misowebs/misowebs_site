@@ -6,7 +6,8 @@ import {
   FaUser,
   FaFileAlt,
   FaTimes,
-  FaExternalLinkAlt
+  FaExternalLinkAlt,
+  FaCalendar
 } from 'react-icons/fa';
 
 const WebsitePreview: React.FC<{ url: string; title: string }> = ({ url, title }) => {
@@ -75,6 +76,8 @@ const WebsitePreview: React.FC<{ url: string; title: string }> = ({ url, title }
 const PortfolioPage: React.FC = () => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
   const [isModalClosing, setIsModalClosing] = useState(false);
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
+  const [isCalendlyModalClosing, setIsCalendlyModalClosing] = useState(false);
 
   const profileData = {
     name: "Yul Castro Barazarte",
@@ -89,13 +92,13 @@ const PortfolioPage: React.FC = () => {
         label: "LinkedIn",
         url: "https://www.linkedin.com/in/yulcastro",
         icon: <FaLinkedin size="20" />,
-        color: "bg-beige/10 hover:bg-beige/20"
+        color: "bg-orange/20 hover:bg-orange/30 text-orange"
       },
       {
         label: "Contact",
         url: "contact",
         icon: <FaUser size="20" />,
-        color: "bg-beige/10 hover:bg-beige/20"
+        color: "bg-orange/20 hover:bg-orange/30 text-orange"
       },
       {
         label: "GitHub",
@@ -107,6 +110,12 @@ const PortfolioPage: React.FC = () => {
         label: "Resume",
         url: "resume",
         icon: <FaFileAlt size="20" />,
+        color: "bg-beige/10 hover:bg-beige/20"
+      },
+      {
+        label: "Schedule a Meeting",
+        url: "calendly",
+        icon: <FaCalendar size="20" />,
         color: "bg-orange/20 hover:bg-orange/30 text-orange"
       }
     ],
@@ -157,26 +166,88 @@ const PortfolioPage: React.FC = () => {
 
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && selectedProjectIndex !== null) {
-        setIsModalClosing(true);
-        document.body.style.overflow = '';
-        setTimeout(() => {
-          setSelectedProjectIndex(null);
-          setIsModalClosing(false);
-        }, 300);
+      if (e.key === 'Escape') {
+        if (selectedProjectIndex !== null) {
+          setIsModalClosing(true);
+          document.body.style.overflow = '';
+          setTimeout(() => {
+            setSelectedProjectIndex(null);
+            setIsModalClosing(false);
+          }, 300);
+        } else if (showCalendlyModal) {
+          setIsCalendlyModalClosing(true);
+          document.body.style.overflow = '';
+          setTimeout(() => {
+            setShowCalendlyModal(false);
+            setIsCalendlyModalClosing(false);
+          }, 300);
+        }
       }
     };
 
-    if (selectedProjectIndex !== null) {
+    if (selectedProjectIndex !== null || showCalendlyModal) {
       window.addEventListener('keydown', handleEscape);
     }
 
     return () => {
       window.removeEventListener('keydown', handleEscape);
     };
-  }, [selectedProjectIndex]);
+  }, [selectedProjectIndex, showCalendlyModal]);
+
+  const handleOpenCalendlyModal = () => {
+    setIsCalendlyModalClosing(false);
+    setShowCalendlyModal(true);
+    document.body.style.overflow = 'hidden';
+    
+    // Load Calendly script if not already loaded
+    if (!document.querySelector('script[src="https://assets.calendly.com/assets/external/widget.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  };
+
+  // Ensure Calendly widget initializes when modal opens
+  React.useEffect(() => {
+    if (showCalendlyModal && !isCalendlyModalClosing) {
+      // Small delay to ensure DOM is ready and script is loaded
+      const timer = setTimeout(() => {
+        // Calendly script automatically initializes widgets, but we can trigger a refresh
+        // by checking if window.Calendly exists
+        if ((window as any).Calendly) {
+          // Widget should auto-initialize, but we can force a refresh if needed
+          const widget = document.querySelector('.calendly-inline-widget');
+          if (widget && !widget.querySelector('iframe')) {
+            // Widget hasn't initialized yet, trigger initialization
+            (window as any).Calendly.initInlineWidget({
+              url: 'https://calendly.com/castroyul/30min',
+              parentElement: widget as HTMLElement
+            });
+          }
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showCalendlyModal, isCalendlyModalClosing]);
+
+  const handleCloseCalendlyModal = () => {
+    setIsCalendlyModalClosing(true);
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      setShowCalendlyModal(false);
+      setIsCalendlyModalClosing(false);
+    }, 300);
+  };
 
   const handleLinkClick = (url: string, label: string) => {
+    // Handle calendly - open modal
+    if (url === 'calendly' || label === 'Schedule') {
+      handleOpenCalendlyModal();
+      return;
+    }
+    
     // Handle resume - open in new tab
     if (url === 'resume' || label === 'Resume') {
       window.open(profileData.resumeUrl, '_blank', 'noopener,noreferrer');
@@ -247,22 +318,26 @@ const PortfolioPage: React.FC = () => {
 
         {/* Links Section */}
         <div className="grid grid-cols-2 gap-3 mb-6">
-          {profileData.links.map((link, index) => (
-            <button
-              key={index}
-              onClick={() => handleLinkClick(link.url, link.label)}
-              className={`
-                w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl
-                border border-beige/20 backdrop-blur-sm
-                transition-all duration-200 active:scale-95
-                ${link.color}
-                text-beige font-medium text-xl
-              `}
-            >
-              {link.icon}
-              <span>{link.label}</span>
-            </button>
-          ))}
+          {profileData.links.map((link, index) => {
+            const isLastLink = index === profileData.links.length - 1;
+            return (
+              <button
+                key={index}
+                onClick={() => handleLinkClick(link.url, link.label)}
+                className={`
+                  w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl
+                  border border-beige/20 backdrop-blur-sm
+                  transition-all duration-200 active:scale-95
+                  ${link.color}
+                  text-beige font-medium text-xl
+                  ${isLastLink ? 'col-span-2' : ''}
+                `}
+              >
+                {link.icon}
+                <span>{link.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Location Map Section */}
@@ -418,6 +493,50 @@ const PortfolioPage: React.FC = () => {
                   </a>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Calendly Modal */}
+      {showCalendlyModal && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
+            isCalendlyModalClosing ? 'animate-fadeOut' : 'animate-fadeIn'
+          }`}
+          onClick={handleCloseCalendlyModal}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-blue/95 backdrop-blur-sm" />
+          
+          {/* Modal Content */}
+          <div
+            className={`relative bg-blue/98 backdrop-blur-md rounded-2xl border border-orange/50 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col ${
+              isCalendlyModalClosing ? 'animate-scaleOut' : 'animate-scaleIn'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-beige/20 flex-shrink-0">
+              <h3 className="text-2xl font-bold text-beige pr-4">
+                Schedule a Meeting
+              </h3>
+              <button
+                onClick={handleCloseCalendlyModal}
+                className="text-beige hover:text-orange active:scale-95 transition-all duration-200 p-2 rounded-full hover:bg-beige/10 flex-shrink-0"
+                aria-label="Close modal"
+              >
+                <FaTimes size="24" />
+              </button>
+            </div>
+
+            {/* Calendly Widget Container */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+              <div 
+                className="calendly-inline-widget w-full"
+                data-url="https://calendly.com/castroyul/30min"
+                style={{ minWidth: '320px', height: '700px' }}
+              />
             </div>
           </div>
         </div>
