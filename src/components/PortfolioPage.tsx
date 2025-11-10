@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   FaGithub, 
   FaLinkedin, 
@@ -9,6 +9,49 @@ import {
   FaExternalLinkAlt,
   FaCalendar
 } from 'react-icons/fa';
+
+// Custom hook for scroll-triggered animations
+interface ScrollAnimationOptions {
+  threshold?: number;
+  rootMargin?: string;
+  once?: boolean;
+}
+
+const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          // Optionally disconnect after first animation
+          if (options.once !== false) {
+            observer.disconnect();
+          }
+        }
+      },
+      {
+        threshold: options.threshold || 0.1,
+        rootMargin: options.rootMargin || '0px 0px -50px 0px',
+      }
+    );
+
+    const currentElement = elementRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, [options.threshold, options.rootMargin, options.once]);
+
+  return [elementRef, isVisible] as const;
+};
 
 const WebsitePreview: React.FC<{ url: string; title: string }> = ({ url, title }) => {
   const [loadError, setLoadError] = React.useState(false);
@@ -78,6 +121,23 @@ const PortfolioPage: React.FC = () => {
   const [isModalClosing, setIsModalClosing] = useState(false);
   const [showCalendlyModal, setShowCalendlyModal] = useState(false);
   const [isCalendlyModalClosing, setIsCalendlyModalClosing] = useState(false);
+  
+  // Entrance animation states
+  const [hasEntered, setHasEntered] = useState(false);
+  
+  // Scroll animation refs
+  const [mapRef, isMapVisible] = useScrollAnimation({ threshold: 0.3 });
+  const [projectsRef, isProjectsVisible] = useScrollAnimation({ threshold: 0.15 });
+  const [contactRef, isContactVisible] = useScrollAnimation({ threshold: 0.2 });
+  const [footerRef, isFooterVisible] = useScrollAnimation({ threshold: 0.1 });
+  
+  // Trigger entrance animations on mount
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasEntered(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const profileData = {
     name: "Yul Castro Barazarte",
@@ -280,7 +340,13 @@ const PortfolioPage: React.FC = () => {
         {/* Profile Section */}
         <div className="text-center mb-8">
           {/* Profile Image */}
-          <div className="mb-6 flex justify-center profile-image-float">
+          <div 
+            className={`mb-6 flex justify-center profile-image-float transition-all duration-700 ease-in-out ${
+              hasEntered 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-8'
+            }`}
+          >
             <img 
               src={profileData.image} 
               alt={profileData.name}
@@ -289,17 +355,38 @@ const PortfolioPage: React.FC = () => {
           </div>
           
           {/* Name */}
-          <h1 className="text-4xl font-bold text-beige mb-2">
+          <h1 
+            className={`text-4xl font-bold text-beige mb-2 transition-all duration-700 ease-in-out ${
+              hasEntered 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+            style={{ transitionDelay: '150ms' }}
+          >
             {profileData.name}
           </h1>
           
           {/* Title */}
-          <p className="text-lg text-orange mb-4 font-medium">
+          <p 
+            className={`text-lg text-orange mb-4 font-medium transition-all duration-700 ease-in-out ${
+              hasEntered 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-6'
+            }`}
+            style={{ transitionDelay: '300ms' }}
+          >
             {profileData.title}
           </p>
           
           {/* Bio */}
-          <p className="text-sm text-beige/80 leading-relaxed mb-6 px-4">
+          <p 
+            className={`text-sm text-beige/80 leading-relaxed mb-6 px-4 transition-all duration-700 ease-in-out ${
+              hasEntered 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '450ms' }}
+          >
             {profileData.bio}
           </p>
           
@@ -308,7 +395,14 @@ const PortfolioPage: React.FC = () => {
             {profileData.skills.map((skill, index) => (
               <span 
                 key={index}
-                className="px-3 py-1 bg-orange/20 text-orange rounded-full text-xs font-medium"
+                className={`px-3 py-1 bg-orange/20 text-orange rounded-full text-xs font-medium transition-all duration-600 ease-in-out ${
+                  hasEntered 
+                    ? 'opacity-100 scale-100' 
+                    : 'opacity-0 scale-90'
+                }`}
+                style={{
+                  transitionDelay: `${600 + index * 100}ms`
+                }}
               >
                 {skill}
               </span>
@@ -327,11 +421,18 @@ const PortfolioPage: React.FC = () => {
                 className={`
                   w-full flex items-center justify-center gap-2 px-4 py-4 rounded-xl
                   border border-beige/20 backdrop-blur-sm
-                  transition-all duration-200 active:scale-95
+                  transition-all duration-600 ease-in-out active:scale-95
                   ${link.color}
                   text-beige font-medium text-xl
                   ${isLastLink ? 'col-span-2' : ''}
+                  ${hasEntered 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-4'
+                  }
                 `}
+                style={{
+                  transitionDelay: `${1000 + index * 100}ms`
+                }}
               >
                 {link.icon}
                 <span>{link.label}</span>
@@ -341,7 +442,14 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Location Map Section */}
-        <div className="mb-6">
+        <div 
+          ref={mapRef}
+          className={`mb-6 transition-all duration-700 ease-in-out ${
+            isMapVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="relative rounded-xl overflow-hidden border border-beige/20 bg-blue/30 h-[250px]">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104267.89675557887!2d-97.44473577150065!3d35.24700570293117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87b263b67f93eee7%3A0x445b233faba85cf8!2sNorman%2C%20OK!5e0!3m2!1sen!2sus!4v1762573370254!5m2!1sen!2sus"
@@ -358,16 +466,37 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Projects Section */}
-        <div className="mb-6 border-t border-beige/20 pt-6">
-          <h2 className="text-2xl font-bold text-beige mb-4 text-center">Projects</h2>
+        <div 
+          ref={projectsRef}
+          className={`mb-6 border-t border-beige/20 pt-6 transition-all duration-700 ease-in-out ${
+            isProjectsVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
+          <h2 
+            className={`text-2xl font-bold text-beige mb-4 text-center transition-all duration-700 ease-in-out ${
+              isProjectsVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-4'
+            }`}
+            style={{ transitionDelay: '200ms' }}
+          >
+            Projects
+          </h2>
           <div className="grid grid-cols-3 gap-3">
             {projects.map((project, index) => (
               <button
                 key={index}
                 onClick={() => handleOpenModal(index)}
-                className="project-card-animated bg-blue/50 backdrop-blur-sm rounded-xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-200 p-4 flex flex-col items-center gap-2"
+                className={`project-card-animated bg-blue/50 backdrop-blur-sm rounded-xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-600 ease-in-out p-4 flex flex-col items-center gap-2 ${
+                  isProjectsVisible 
+                    ? 'opacity-100 scale-100 translate-y-0' 
+                    : 'opacity-0 scale-95 translate-y-4'
+                }`}
                 style={{
-                  '--border-delay': `${index * 0.8}s`
+                  '--border-delay': `${index * 0.8}s`,
+                  transitionDelay: `${400 + index * 100}ms`
                 } as React.CSSProperties & { '--border-delay': string }}
               >
                 {project.logo && (
@@ -386,7 +515,14 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Contact Info */}
-        <div className="flex flex-col items-center gap-3 pt-6 border-t border-beige/20">
+        <div 
+          ref={contactRef}
+          className={`flex flex-col items-center gap-3 pt-6 border-t border-beige/20 transition-all duration-700 ease-in-out ${
+            isContactVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-6'
+          }`}
+        >
           {profileData.email && (
             <a
               href={`mailto:${profileData.email}`}
@@ -399,7 +535,14 @@ const PortfolioPage: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8 pt-6 border-t border-beige/10">
+        <div 
+          ref={footerRef}
+          className={`text-center mt-8 pt-6 border-t border-beige/10 transition-all duration-700 ease-in-out ${
+            isFooterVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-4'
+          }`}
+        >
           <p className="text-xs text-beige/60">
             Misowebs © {new Date().getFullYear()}
           </p>
