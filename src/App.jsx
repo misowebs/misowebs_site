@@ -26,7 +26,7 @@ function App() {
     const params = new URLSearchParams(window.location.search)
     const hash = window.location.hash
     
-    if (path.includes('/yulcastro') ||path.includes('/YulCastro') || path.includes('/portfolio') || params.get('page') === 'portfolio' || hash === '#portfolio') {
+    if (path.includes('/yul') || path.includes('/Yul') || path.includes('/yulcastro') || path.includes('/YulCastro') || path.includes('/portfolio') || params.get('page') === 'portfolio' || hash === '#portfolio') {
       setShowPortfolio(true)
     } else {
       setShowPortfolio(false)
