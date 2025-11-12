@@ -83,7 +83,7 @@ const AboutSection: React.FC = () => {
             }`}
             style={{ transitionDelay: '400ms' }}
           >
-            <h3 className="text-3xl font-bold text-beige mb-6">
+            <h3 className="text-3xl font-bold text-beige mb-6 text-center">
               Meet the Team
             </h3>
             <div className="space-y-6">
@@ -106,14 +106,14 @@ const AboutSection: React.FC = () => {
                     className="rounded-xl border-2 border-orange object-cover w-130"
                   />
                 </div>
-                <h4 className="text-xl font-bold text-beige mb-3">
+                <h4 className="text-xl font-bold text-beige mb-3 text-center">
                   Yul Castro
                 </h4>
-                <h4 className="text-xl font-bold text-beige mb-3">
-                  Founder & Lead Developer
+                <h4 className="text-xl font-bold text-beige mb-3 text-center">
+                  Founder & Web Developer
                 </h4>
                 <p className="text-xs md:text-base text-beige/80 leading-relaxed mb-4">
-                Full-stack developer with hands-on experience designing, deploying, and maintaining web platforms on AWS. 
+                Software developer with hands-on experience designing, deploying, and maintaining web platforms on AWS. 
                 Computer Science graduate from the University of Oklahoma.
 
                 </p>
@@ -150,7 +150,7 @@ const AboutSection: React.FC = () => {
             }`}
             style={{ transitionDelay: '500ms' }}
           >
-            <h3 className="text-3xl font-bold text-beige mb-6">
+            <h3 className="text-3xl font-bold text-beige mb-6 text-center">
               Our Story
             </h3>
             <div className="space-y-4 text-beige/80 leading-relaxed text-left">

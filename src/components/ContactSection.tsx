@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 const ContactSection: React.FC = () => {
@@ -66,10 +66,10 @@ const ContactSection: React.FC = () => {
             style={{ transitionDelay: '400ms' }}
           >
             <div>
-              <h3 className="text-2xl font-bold text-beige mb-6">
+              <h3 className="text-2xl font-bold text-beige mb-6 text-center">
                 Contact Information
               </h3>
-              <p className="text-beige/80 leading-relaxed mb-8">
+              <p className="text-beige/80 leading-relaxed mb-8 text-center">
                 Have a question or want to discuss your project? Feel free to reach out through any of these channels.
               </p>
             </div>

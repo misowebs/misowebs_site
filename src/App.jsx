@@ -1,7 +1,4 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import Navbar from './components/Navbar'
 import HomeSection from './components/HomeSection'
 import ServicesSection from './components/ServicesSection'
@@ -14,14 +11,13 @@ import { SITE_CONFIG } from './constants/siteConfig'
 // Footer component
 function FooterSection() {
   return (
-    <div className="text-xs md:text-base">
+    <div className="text-xs md:text-base text-center">
       <p>{SITE_CONFIG.title} by Miso Solutions LLC © {new Date().getFullYear()} Developed by Yul Castro</p><br/>
     </div>
   );
 }
 
 function App() {
-  const [count, setCount] = useState(0)
   const [showPortfolio, setShowPortfolio] = useState(false)
   const [navbarEntered, setNavbarEntered] = useState(false)
 
