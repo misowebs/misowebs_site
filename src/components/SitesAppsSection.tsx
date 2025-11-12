@@ -61,7 +61,7 @@ const SitesAppsSection: React.FC = () => {
       title: "Venezuelan Association at OU",
       description: "Built and deployed a scalable, SEO-optimized site on AWS (Amplify, S3, CloudFront). Increased membership 30% through improved UX, event visibility, and community engagement.",
       technologies: ["HTML5", "CSS3", "JavaScript", "React", "AWS", "SEO", "GitHub"],
-      liveUrl: "http://vaou.org/",
+      liveUrl: "https://vaou.org/",
       githubUrl: "https://github.com/misowebs/va_website",
       logo: "/SitesLogos/VA Logo.png"
     },
