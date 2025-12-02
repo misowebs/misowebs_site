@@ -102,7 +102,7 @@ const ServicesSection: React.FC = () => {
     <section ref={sectionRef} id="services" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-16">
+        <header className="text-center mb-16">
           <h2 
             className={`text-3xl md:text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
               isVisible 
@@ -122,30 +122,31 @@ const ServicesSection: React.FC = () => {
           >
             Comprehensive web solutions tailored to your needs
           </p>
-        </div>
+        </header>
 
         {/* Mobile: Compact Cards */}
         <div className="flex flex-col gap-4 md:hidden">
           {services.map((service, index) => (
-            <button
-              key={index}
-              onClick={() => handleOpenModal(index)}
-              className={`bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-600 ease-in-out p-6 text-left ${
-                isVisible 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-6'
-              }`}
-              style={{ transitionDelay: `${400 + index * 150}ms` }}
-            >
-              <div className="flex items-center gap-4">
-                <div className="text-orange flex-shrink-0">
-                  {service.icon}
+            <article key={index}>
+              <button
+                onClick={() => handleOpenModal(index)}
+                className={`bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-600 ease-in-out p-6 text-left w-full ${
+                  isVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-6'
+                }`}
+                style={{ transitionDelay: `${400 + index * 150}ms` }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="text-orange flex-shrink-0">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-beige">
+                    {service.title}
+                  </h3>
                 </div>
-                <h3 className="text-xl font-bold text-beige">
-                  {service.title}
-                </h3>
-              </div>
-            </button>
+              </button>
+            </article>
           ))}
         </div>
 
@@ -155,7 +156,7 @@ const ServicesSection: React.FC = () => {
             const isHovered = hoveredIndex === index;
             const hasHovered = hoveredIndex !== null;
             return (
-              <div
+              <article
                 key={index}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -206,7 +207,7 @@ const ServicesSection: React.FC = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

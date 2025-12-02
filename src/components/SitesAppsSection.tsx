@@ -89,7 +89,7 @@ const SitesAppsSection: React.FC = () => {
     <section ref={sectionRef} id="webs" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-16">
+        <header className="text-center mb-16">
           <h2 
             className={`text-3xl md:text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
               isVisible 
@@ -109,42 +109,43 @@ const SitesAppsSection: React.FC = () => {
           >
             Showcasing our latest projects and creations
           </p>
-        </div>
+        </header>
         
         {/* Mobile: Compact Cards (Title Only) */}
         <div className="flex flex-col gap-4 md:hidden">
           {projects.map((project, index) => (
-            <button
-              key={index}
-              onClick={() => handleOpenModal(index)}
-              className={`bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-600 ease-in-out p-6 text-left ${
-                isVisible 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-6'
-              }`}
-              style={{ transitionDelay: `${400 + index * 150}ms` }}
-            >
-              <div className="flex items-center gap-4">
-                {project.logo && (
-                  <img 
-                    src={project.logo} 
-                    alt={`${project.title} logo`}
-                    className="h-12 w-12 object-contain flex-shrink-0 rounded-lg"
-                  />
-                )}
-                <h3 className="text-xl font-bold text-beige">
-                  {project.title}
-                </h3>
-              </div>
-            </button>
+            <article key={index}>
+              <button
+                onClick={() => handleOpenModal(index)}
+                className={`bg-blue/50 backdrop-blur-sm rounded-2xl border border-beige/20 hover:border-orange/50 active:scale-95 transition-all duration-600 ease-in-out p-6 text-left w-full ${
+                  isVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-6'
+                }`}
+                style={{ transitionDelay: `${400 + index * 150}ms` }}
+              >
+                <div className="flex items-center gap-4">
+                  {project.logo && (
+                    <img 
+                      src={project.logo} 
+                      alt={`${project.title} - Web Development Project Logo`}
+                      className="h-12 w-12 object-contain flex-shrink-0 rounded-lg"
+                    />
+                  )}
+                  <h3 className="text-xl font-bold text-beige">
+                    {project.title}
+                  </h3>
+                </div>
+              </button>
+            </article>
           ))}
         </div>
 
         {/* Desktop: Full Project Cards with Hover */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <a
-              key={index}
+            <article key={index}>
+              <a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -215,6 +216,7 @@ const SitesAppsSection: React.FC = () => {
                 )}
               </div>
             </a>
+            </article>
           ))}
         </div>
       </div>

@@ -33,7 +33,7 @@ const ContactSection: React.FC = () => {
     <section ref={sectionRef} id="contact" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto w-full">
         {/* Title */}
-        <div className="text-center mb-16">
+        <header className="text-center mb-16">
           <h2 
             className={`text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
               isVisible 
@@ -53,7 +53,7 @@ const ContactSection: React.FC = () => {
           >
             Ready to start your next project? Let's talk!
           </p>
-        </div>
+        </header>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}

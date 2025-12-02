@@ -17,13 +17,13 @@ const HomeSection: React.FC = () => {
         >
           <img 
             src="/Misowebs_Logo_Animated.gif" 
-            alt="Misowebs Logo"
+            alt="Misowebs - Professional Web Development and Digital Solutions Logo"
             className="h-82 w-82 mx-auto rounded-2xl shadow-2xl bg-beige"
           />
         </div>
         
-        {/* Subtitle */}
-        <h2 
+        {/* Main Heading */}
+        <h1 
           className={`text-2xl text-orange mb-8 font-semibold transition-all duration-700 ease-in-out ${
             isVisible 
               ? 'opacity-100 translate-y-0' 
@@ -32,7 +32,7 @@ const HomeSection: React.FC = () => {
           style={{ transitionDelay: '200ms' }}
         >
           Professional Web Development & Digital Solutions
-        </h2>
+        </h1>
         
         {/* Paragraph */}
         <p 

@@ -51,6 +51,43 @@ function App() {
     }
   }, [])
 
+  // Update document title and meta description for SEO
+  useEffect(() => {
+    const baseTitle = 'Misowebs | Modern, Responsive Websites for Your Business'
+    const portfolioTitle = 'Yul Castro Portfolio | Misowebs'
+    const baseDescription =
+      'Misowebs creates modern, responsive websites and web apps to help businesses build a strong online presence with custom, performance-focused designs.'
+    const portfolioDescription =
+      'Explore the portfolio of Yul Castro, showcasing modern websites and applications crafted under Misowebs and Miso Solutions LLC.'
+
+    document.title = showPortfolio ? portfolioTitle : baseTitle
+
+    // Update meta description
+    const descriptionTag = document.querySelector('meta[name="description"]')
+    if (descriptionTag) {
+      descriptionTag.setAttribute(
+        'content',
+        showPortfolio ? portfolioDescription : baseDescription
+      )
+    }
+
+    // Update Open Graph tags dynamically
+    const ogTitle = document.querySelector('meta[property="og:title"]')
+    const ogDescription = document.querySelector('meta[property="og:description"]')
+    const ogUrl = document.querySelector('meta[property="og:url"]')
+    
+    if (ogTitle) {
+      ogTitle.setAttribute('content', showPortfolio ? portfolioTitle : baseTitle)
+    }
+    if (ogDescription) {
+      ogDescription.setAttribute('content', showPortfolio ? portfolioDescription : baseDescription)
+    }
+    if (ogUrl) {
+      const currentUrl = window.location.origin + window.location.pathname + window.location.search
+      ogUrl.setAttribute('content', currentUrl)
+    }
+  }, [showPortfolio])
+
   // Show portfolio page if requested
   if (showPortfolio) {
     return <PortfolioPage />
@@ -58,8 +95,10 @@ function App() {
 
   return (
     <>
-      <div>
+      <header>
         <Navbar hasEntered={navbarEntered} />
+      </header>
+      <main>
         <div className="pb-16 md:pb-0 md:ml-12">
           {/* Section 1: Home */}
           <HomeSection />
@@ -75,11 +114,11 @@ function App() {
           
           {/* Section 5: About */}
           <AboutSection />
-
-          {/* Footer */}
-          <FooterSection />
         </div>
-      </div>
+      </main>
+      <footer>
+        <FooterSection />
+      </footer>
     </>
   )
 }

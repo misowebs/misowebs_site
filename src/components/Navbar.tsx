@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ hasEntered = false }) => {
         <div className="flex flex-row justify-around items-center h-full px-2">
           {/* Home */}
           <MobileNavItem 
-            icon={<img src="/Misowebs_Logo_Circle.png" alt="Misowebs Logo" className="h-5 w-5 rounded-full" />}
+            icon={<img src="/Misowebs_Logo_Circle.png" alt="Misowebs Home" className="h-5 w-5 rounded-full" />}
             text="Home"
             onClick={() => scrollToSection('home')}
           />
@@ -75,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ hasEntered = false }) => {
           <SideBarIcon 
             icon={ <img 
                     src="/Head.PNG" 
-                    alt="Misowebs Logo" 
+                    alt="Misowebs Home Navigation" 
                     className="h-10 w-10 rounded-full"
                    /> }
             text='Home' 

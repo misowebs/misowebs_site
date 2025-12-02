@@ -398,7 +398,7 @@ const PortfolioPage: React.FC = () => {
                 {project.logo && (
                   <img 
                     src={project.logo} 
-                    alt={`${project.title} logo`}
+                    alt={`${project.title} - Web Development Project Logo`}
                     className="h-24 w-24 object-contain rounded-lg"
                   />
                 )}

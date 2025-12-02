@@ -51,7 +51,7 @@ const AboutSection: React.FC = () => {
     <section ref={sectionRef} id="about" className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl mx-auto">
         {/* Title */}
-        <div className="text-center mb-16">
+        <header className="text-center mb-16">
           <h2 
             className={`text-5xl font-bold text-beige mb-4 transition-all duration-700 ease-in-out ${
               isVisible 
@@ -71,7 +71,7 @@ const AboutSection: React.FC = () => {
           >
             Your trusted partner in digital transformation
           </p>
-        </div>
+        </header>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 mb-16">        
           {/* Personal/Team Info */}
@@ -102,7 +102,7 @@ const AboutSection: React.FC = () => {
                 <div className="mb-6 flex justify-center">
                   <img 
                     src="/Headshot.jpeg" 
-                    alt="Yul Castro" 
+                    alt="Yul Castro - Founder & Web Developer at Misowebs" 
                     className="rounded-xl border-2 border-orange object-cover w-130"
                   />
                 </div>
