@@ -6,7 +6,6 @@ import SitesAppsSection from './components/SitesAppsSection'
 import ContactSection from './components/ContactSection'
 import AboutSection from './components/AboutSection'
 import PortfolioPage from './components/PortfolioPage'
-import SEO from './components/SEO'
 import { SITE_CONFIG } from './constants/siteConfig'
 
 // Footer component
@@ -59,7 +58,6 @@ function App() {
 
   return (
     <>
-      <SEO />
       <div>
         <Navbar hasEntered={navbarEntered} />
         <div className="pb-16 md:pb-0 md:ml-12">

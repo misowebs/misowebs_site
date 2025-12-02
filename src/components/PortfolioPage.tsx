@@ -11,7 +11,6 @@ import {
 } from 'react-icons/fa';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import WebsitePreview from './WebsitePreview';
-import SEO from './SEO';
 
 const PortfolioPage: React.FC = () => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState<number | null>(null);
@@ -232,14 +231,8 @@ const PortfolioPage: React.FC = () => {
   };
 
   return (
-    <>
-      <SEO 
-        title="Yul Castro - Portfolio | Misowebs"
-        description="Portfolio of Yul Castro, Computer Scientist and Web Developer. Specializing in AWS, React, and modern web development. View projects and schedule a meeting."
-        url="https://misowebs.com/yul"
-      />
-      <div className="min-h-screen bg-blue flex items-center justify-center px-4 py-8">
-        <div className="max-w-md w-full">
+    <div className="min-h-screen bg-blue flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full">
         {/* Profile Section */}
         <div className="text-center mb-8">
           {/* Profile Image */}
@@ -587,8 +580,7 @@ const PortfolioPage: React.FC = () => {
           </div>
         </div>
       )}
-      </div>
-    </>
+    </div>
   );
 };
 
